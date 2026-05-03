@@ -9,8 +9,11 @@ O Oraculum é um sistema de ponta a ponta: percebe o mundo, interpreta o que per
 ## Fluxo geral
 
 ```
-[ ENTRADA ]  →  [ INTERPRETAÇÃO ]  →  [ BANCO DE DADOS VIVO ]  →  [ DECISÃO ]  →  [ SAÍDA ]  →  [ PRESENÇA FÍSICA ]
-  percepção       processamento              memória               lógica / IA    expressão      manifestação
+[ ENTRADA ]  →  [ INTERPRETAÇÃO ]  →  [ DECISÃO ]  →  [ SAÍDA ]  →  [ PRESENÇA FÍSICA ]
+  percepção       processamento        lógica / IA    expressão      manifestação
+                        ↕
+               [ BANCO DE DADOS VIVO ]
+                       memória
 ```
 
 ---
