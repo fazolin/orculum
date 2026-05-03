@@ -9,8 +9,8 @@ O Oraculum é um sistema de ponta a ponta: percebe o mundo, interpreta o que per
 ## Fluxo geral
 
 ```
-[ ENTRADA ]  →  [ INTERPRETAÇÃO ]  →  [ DB VIVO ]  →  [ DECISÃO ]  →  [ SAÍDA ]  →  [ PRESENÇA FÍSICA ]
-  percepção       processamento         memória          LLM / lógica    expressão      manifestação
+[ ENTRADA ]  →  [ INTERPRETAÇÃO ]  →  [ BANCO DE DADOS VIVO ]  →  [ DECISÃO ]  →  [ SAÍDA ]  →  [ PRESENÇA FÍSICA ]
+  percepção       processamento              memória               lógica / IA    expressão      manifestação
 ```
 
 ---
@@ -42,7 +42,7 @@ Tecnologias em investigação:
 - **YOLO** — detecção de objetos e pessoas em tempo real
 - **SAM (Segment Anything, Meta)** — segmentação semântica de qualquer elemento visual
 - **Câmeras de profundidade** — Intel RealSense, Microsoft Azure Kinect; adicionam dimensão Z ao espaço
-- **Modelos de reconhecimento facial** — DeepFace, InsightFace; para identificação e persistência de identidade no DB
+- **Modelos de reconhecimento facial** — DeepFace, InsightFace; para identificar e guardar pessoas no banco de dados vivo
 
 ### 1.2 Escuta
 
@@ -62,11 +62,11 @@ Tecnologias em investigação:
 
 ## 2. Interpretação — A mente do oráculo
 
-Esta camada recebe os dados brutos da percepção e produz significado. É aqui que o oráculo decide o que o mundo está dizendo — e alimenta o DB vivo com o que aprendeu.
+Esta camada recebe os dados brutos da percepção e produz significado. É aqui que o oráculo decide o que o mundo está dizendo — e alimenta o banco de dados vivo com o que aprendeu.
 
 ### 2.1 Camada de raciocínio — LLM
 
-Um modelo de linguagem grande atua como motor simbólico: recebe inputs multimodais (transcrições, dados de pose, descrições de cena, contexto do DB) e produz uma interpretação — e uma intenção de resposta.
+Um modelo de linguagem grande atua como motor de raciocínio: recebe tudo que o oráculo percebeu (o que foi dito, como a pessoa se movia, como ela parecia, o que o banco de dados sabe sobre ela) e produz uma interpretação — e uma intenção de resposta.
 
 Questões em aberto:
 - Qual modelo? Modelos locais (Llama, Mistral) vs. API (Claude, GPT-4o) — trade-off entre latência, custo e capacidade. A arquitetura deve permitir trocar o modelo sem reescrever o sistema.
@@ -75,31 +75,31 @@ Questões em aberto:
 
 ### 2.2 Integração multimodal
 
-Como combinar visão + áudio + contexto do DB em um único input para o LLM:
+Como combinar visão + áudio + memória do banco de dados em uma única entrada para o modelo de linguagem:
 - Modelos multimodais nativos (GPT-4o, Claude com visão) recebem imagem + texto diretamente
 - Pipelines compostos: cada modalidade processada separadamente, resultado concatenado antes do LLM
 
 ---
 
-## 3. DB Vivo — Memória do oráculo **[DECIDIDO]**
+## 3. Banco de dados vivo — Memória do oráculo **[DECIDIDO]**
 
-O oráculo tem memória. Cada interação gera dados que são persistidos e consultados nas interações seguintes. O DB é alimentado pela camada de interpretação após cada ciclo perceptivo.
+O oráculo tem memória. Cada encontro gera informações que são guardadas e consultadas nos encontros seguintes. O banco de dados é alimentado pela camada de interpretação a cada ciclo.
 
-O que o DB armazena:
+O que o banco de dados guarda:
 
 - **Identidades** — rostos reconhecidos, embeddings faciais, primeira vez que apareceram, quantas vezes retornaram
 - **Histórico de interações** — o que foi dito, o que o oráculo respondeu, contexto da sessão
 - **Estado emocional observado** — por pessoa, ao longo do tempo
 - **Presenças** — quando cada pessoa esteve diante do oráculo, por quanto tempo
 
-O que o DB permite:
+O que o banco de dados permite:
 
 - O oráculo reconhece quem já conhece
 - O oráculo lembra do que aconteceu antes
 - O oráculo pode tratar um retornante de forma diferente de um estranho
 - A história do oráculo cresce com o tempo — ele envelhece, acumula
 
-Tecnologias em investigação para o DB:
+Tecnologias em investigação para o banco de dados:
 - **SQLite** — leve, local, sem servidor; adequado para instalações isoladas
 - **PostgreSQL com pgvector** — para armazenar e buscar embeddings faciais por similaridade
 - **Redis** — para estado de sessão em tempo real (quem está na frente agora)
