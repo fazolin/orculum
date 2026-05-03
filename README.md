@@ -22,9 +22,22 @@ Esta tensão não precisa ser resolvida. Ela *é* o trabalho.
 
 ## Estado atual
 
-**Fase: Pesquisa conceitual e técnica**
+**Fase: Pesquisa e primeiros protótipos**
 
-Nenhum código foi escrito. O repositório existe para documentar um processo vivo de investigação — decisões tomadas, caminhos descartados, referências que iluminam e tangentes que merecem existir.
+O repositório documenta a investigação e os primeiros módulos do sistema.
+
+---
+
+## Instalação e execução
+
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+git clone https://github.com/fazolin/orculum.git
+cd orculum
+uv run python src/main.py
+```
+
+Na primeira vez, o programa verifica o que falta e guia a instalação.
 
 ---
 

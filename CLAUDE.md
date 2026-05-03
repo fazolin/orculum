@@ -10,6 +10,8 @@ Oraculum é uma instalação de arte interativa — um oráculo contemporâneo q
 
 O repositório documenta um processo vivo de pesquisa conceitual e técnica. Nenhuma decisão tecnológica está finalizada. Nenhuma arquitetura foi definida.
 
+Este é um **monorepo** — toda a pesquisa, documentação e implementação vivem aqui, nesta pasta. Não existe repositório separado para nenhum módulo.
+
 ---
 
 ## Princípio fundamental

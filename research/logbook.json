@@ -67,6 +67,78 @@
         "research/modulos.md"
       ],
       "tags": ["avatar", "expressão visual", "lipsync", "tempo real", "pesquisa"]
+    },
+    {
+      "id": 5,
+      "timestamp": "2026-05-03T00:00:00-03:00",
+      "title": "Respostas em camadas paralelas e hardware híbrido",
+      "summary": "Duas direções arquiteturais importantes. O sistema terá camadas de resposta paralelas com velocidades diferentes: uma camada imediata (avatar, lipsync, reação instantânea) e uma camada profunda (imagem gerada, raciocínio mais elaborado, áudio complexo) que chega depois mas com mais densidade. O hardware será híbrido: GPU local para tudo que exige resposta imediata, nuvem para modelos maiores e mais lentos. As duas decisões se complementam — local para o imediato, nuvem para o profundo.",
+      "decisions": [
+        "O sistema responde em camadas paralelas com latências diferentes — imediata e profunda",
+        "Camada imediata: GPU local, lipsync, avatar — resposta em milissegundos",
+        "Camada profunda: nuvem, modelos maiores, geração de imagem e áudio complexo — resposta em segundos",
+        "Hardware híbrido: GPU local + nuvem",
+        "Questão em aberto: comportamento do sistema quando a conexão com a nuvem cai durante uma exposição"
+      ],
+      "links": [],
+      "assets": [
+        "research/modulos.md"
+      ],
+      "tags": ["latência", "hardware", "arquitetura", "tempo real", "nuvem", "paralelo"]
+    },
+    {
+      "id": 6,
+      "timestamp": "2026-05-03T00:00:00-03:00",
+      "title": "O oráculo é um ser único",
+      "summary": "Decisão conceitual: o oráculo é um ser único que se manifesta em vários lugares ao mesmo tempo. Todas as instâncias compartilham o mesmo banco de dados vivo. Alguém encontrado em São Paulo é reconhecido em Lisboa. A memória é uma só. Tecnicamente, isso leva à arquitetura híbrida — banco de dados central na nuvem, cache local para velocidade.",
+      "decisions": [
+        "O oráculo é um ser único — todas as instâncias compartilham a mesma memória",
+        "Banco de dados central na nuvem, acessado por todas as instâncias",
+        "Memória híbrida: cache local para resposta rápida, sincronização com a nuvem em segundo plano",
+      ],
+      "links": [],
+      "assets": [
+        "research/modulos.md"
+      ],
+      "tags": ["múltiplas instâncias", "banco de dados vivo", "memória", "arquitetura", "conceito"]
+    },
+    {
+      "id": 7,
+      "timestamp": "2026-05-03T00:00:00-03:00",
+      "title": "Documento de stack — começando simples, crescendo fácil",
+      "summary": "Primeiro mapeamento concreto de tecnologias por camada. Princípio: cada módulo funciona sozinho, se comunica por interfaces claras, e pode ser trocado. Percepção em Python (MediaPipe, InsightFace, Whisper). Interpretação via Claude API com modelo local de apoio. Banco de dados: PostgreSQL+pgvector na nuvem, SQLite local, Redis para sessão. Expressão visual: Audio2Face + motor 3D para avatar, ComfyUI para imagem. Expressão sonora: ElevenLabs para voz, SuperCollider para ambiência. Integração via OSC, NDI, WebSocket. Primeiro protótipo proposto: webcam + MediaPipe + Whisper + Claude API + ElevenLabs + lipsync simples.",
+      "decisions": [],
+      "links": [],
+      "assets": [
+        "research/stack.md"
+      ],
+      "tags": ["stack", "tecnologia", "protótipo", "arquitetura"]
+    },
+    {
+      "id": 8,
+      "timestamp": "2026-05-03T00:00:00-03:00",
+      "title": "Primeiro protótipo funcional — entrada de imagem e som com percepção via Ollama",
+      "summary": "Implementação do primeiro ciclo funcional: captura de imagem e som, entendimento da cena via Moondream rodando no Ollama. Estrutura do código: main.py como orquestrador, capture.py para câmera e microfone, perception.py para entendimento de cena. Instalação simplificada com uv (uma linha). Percepção roda em thread separada para não travar o vídeo. O programa verifica e configura dependências automaticamente ao iniciar.",
+      "decisions": [
+        "Ollama como servidor de modelos locais — gerencia download, otimização e inferência",
+        "uv como gerenciador de ambiente — resolve Python e dependências automaticamente",
+        "Percepção roda em thread separada — vídeo nunca trava",
+        "O programa verifica dependências ao iniciar e guia o usuário se algo faltar",
+        "Instalação deve ser plug and play — mínimo de passos manuais"
+      ],
+      "links": [
+        "https://docs.astral.sh/uv/",
+        "https://ollama.ai/",
+        "https://huggingface.co/moondream"
+      ],
+      "assets": [
+        "src/main.py",
+        "src/input/capture.py",
+        "src/input/perception.py",
+        "pyproject.toml",
+        "README.md"
+      ],
+      "tags": ["implementação", "protótipo", "ollama", "uv", "moondream", "percepção"]
     }
   ]
 }

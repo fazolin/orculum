@@ -1,6 +1,6 @@
 # Módulos do sistema — visão geral
 
-> Documento de pesquisa aberta. Seções marcadas com **[DECIDIDO]** refletem escolhas já tomadas.
+> Documento de pesquisa aberta. Tudo aqui pode mudar.
 
 O Oraculum é um sistema de ponta a ponta: percebe o mundo, interpreta o que percebeu, e responde com som e imagem. Esta página mapeia os módulos que compõem esse fluxo, das entradas até os resultados, e as tecnologias sendo investigadas em cada camada.
 
@@ -18,8 +18,7 @@ O Oraculum é um sistema de ponta a ponta: percebe o mundo, interpreta o que per
 
 ---
 
-## Princípio de arquitetura **[DECIDIDO]**
-
+## Princípio de arquitetura
 O sistema deve ser **modular e substituível**. A IA evolui rápido — qualquer modelo em qualquer camada deve poder ser trocado por um mais rápido ou mais poderoso com o mínimo de fricção. Nenhum módulo deve ser acoplado ao modelo específico que o implementa. A interface entre módulos é o que importa, não a implementação interna.
 
 ---
@@ -28,8 +27,7 @@ O sistema deve ser **modular e substituível**. A IA evolui rápido — qualquer
 
 O oráculo percebe o máximo possível do que acontece ao seu redor.
 
-### 1.1 Visão **[DECIDIDO]**
-
+### 1.1 Visão
 O oráculo vê o máximo que a tecnologia permite. Não há limitação intencional de percepção — o escopo é perceber presença, movimento, pose, expressão facial, profundidade espacial e identidade. A decisão de *o que fazer* com cada dado é da camada de interpretação, não desta.
 
 O que esta camada extrai:
@@ -84,8 +82,7 @@ Como combinar visão + áudio + memória do banco de dados em uma única entrada
 
 ---
 
-## 3. Banco de dados vivo — Memória do oráculo **[DECIDIDO]**
-
+## 3. Banco de dados vivo — Memória do oráculo
 O oráculo tem memória. Cada encontro gera informações que são guardadas e consultadas nos encontros seguintes. O banco de dados é alimentado pela camada de interpretação a cada ciclo.
 
 O que o banco de dados guarda:
@@ -109,6 +106,15 @@ Tecnologias em investigação para o banco de dados:
 - **Embeddings faciais** — representações vetoriais de rostos; permitem busca por similaridade sem armazenar imagens
 
 Questão em aberto: privacidade e consentimento. O oráculo que lembra de rostos levanta questões éticas e legais em espaços públicos. Como comunicar isso ao visitante? O apagamento de identidade é uma opção que o visitante pode escolher?
+
+### Múltiplas instâncias
+
+O oráculo pode existir em vários lugares ao mesmo tempo — uma instância em cada exposição. Isso levanta uma questão conceitual e técnica central: **o banco de dados é compartilhado ou cada instância tem a sua própria memória?**
+
+O oráculo é um ser único que se manifesta em vários lugares ao mesmo tempo. Todas as instâncias compartilham a mesma memória — o mesmo banco de dados vivo. Alguém que o encontrou em São Paulo é reconhecido em Lisboa. A história do oráculo é uma só, acumulada em todos os encontros, em todos os lugares.
+
+Tecnicamente, isso exige um banco de dados central na nuvem, acessado por todas as instâncias. A memória híbrida — local para velocidade, sincronização em segundo plano — é o caminho natural: cada instância responde rápido com o que tem, e atualiza a memória global quando pode.
+
 
 ---
 
@@ -225,11 +231,36 @@ Questão em aberto: arquitetura centralizada (um orquestrador) vs. distribuída 
 
 ## Questões transversais
 
-- **Latência** — quanto atraso é aceitável? O oráculo precisa ser instantâneo ou pode ter cadência própria, mais lenta e ritualística?
-- **Hardware** — qual máquina roda o sistema? GPU local vs. cloud vs. híbrido?
-- **Autonomia** — o oráculo funciona sozinho durante uma exposição? Qual é o plano para falhas?
-- **Identidade** — o oráculo tem um personagem estável ou ele emerge da interação?
-- **Privacidade** — como comunicar ao visitante que o oráculo o reconhece e o lembra?
+### Latência — respostas em camadas paralelas
+
+O sistema não precisa ter uma única velocidade de resposta. A ideia é ter camadas paralelas com tempos diferentes:
+
+- **Camada imediata** — resposta em milissegundos. O avatar reage, o rosto se move, o lipsync começa. O oráculo já está "vivo" antes de ter processado tudo. Sensação de presença instantânea.
+- **Camada profunda** — resposta em segundos. Uma imagem é gerada, um raciocínio mais elaborado é produzido, uma composição sonora emerge. Chega depois, mas com mais densidade.
+
+As duas camadas rodam ao mesmo tempo e se complementam. O visitante sente o oráculo reagir imediatamente — e continua sendo surpreendido pelo que chega depois.
+
+Questão em aberto: como as duas camadas se articulam visualmente e sonoramente sem se contradizer ou criar ruído?
+
+### Hardware — híbrido local e nuvem
+
+A arquitetura de processamento será híbrida:
+
+- **GPU local** — para tudo que exige baixa latência: percepção em tempo real, lipsync, avatar, síntese visual imediata. Processamento que não pode depender de conexão.
+- **Nuvem** — para modelos maiores e mais lentos: geração de imagem de alta qualidade, modelos de linguagem mais poderosos, geração de áudio complexo. Processamento que pode chegar com alguns segundos de atraso.
+
+Esta divisão casa diretamente com a arquitetura de camadas paralelas: local para o imediato, nuvem para o profundo.
+
+Questão em aberto: qual o plano quando a conexão cai durante uma exposição? O sistema precisa funcionar de forma reduzida mas estável apenas com o processamento local.
+
+### Autonomia
+O oráculo funciona sozinho durante uma exposição. Qual é o plano para falhas — em cada módulo, local e na nuvem?
+
+### Identidade
+O oráculo tem um personagem estável ou ele emerge da interação?
+
+### Privacidade
+Como comunicar ao visitante que o oráculo o reconhece e o lembra?
 
 ---
 
