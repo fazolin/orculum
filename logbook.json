@@ -1,0 +1,25 @@
+{
+  "project": "Oraculum",
+  "entries": [
+    {
+      "id": 1,
+      "timestamp": "2026-05-03T00:00:00-03:00",
+      "title": "Sessão fundacional — repositório, documentação e diário de bordo",
+      "summary": "Primeira sessão de trabalho no repositório. A partir de um prompt de inicialização detalhado, foram criados README.md e CLAUDE.md. Em seguida, o Claude criou pastas (research/, decisions/) sem instrução — o usuário corrigiu, as pastas foram removidas e o CLAUDE.md foi atualizado para incluir a regra de não tomar decisões estruturais sem instrução explícita. Por fim, o usuário propôs o diário de bordo como formato de registro de decisões: um arquivo JSON com entradas cronológicas contendo resumo, decisões, links e assets.",
+      "decisions": [
+        "Pesquisa precede implementação — nenhum código antes de decisões documentadas e alternativas consideradas",
+        "A tensão entre presença física e imaterialidade é uma questão norteadora em aberto — não resolver",
+        "Tangentes conceituais são material do trabalho — registrar, não descartar",
+        "Claude não cria estrutura de pastas, convenções ou arquitetura sem instrução explícita do usuário",
+        "Diário de bordo em logbook.json como registro central de decisões, referências e assets do projeto"
+      ],
+      "links": [],
+      "assets": [
+        "README.md",
+        "CLAUDE.md",
+        "logbook.json"
+      ],
+      "tags": ["setup", "fundação", "metodologia", "diário"]
+    }
+  ]
+}
