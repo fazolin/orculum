@@ -17,9 +17,26 @@
       "assets": [
         "README.md",
         "CLAUDE.md",
-        "logbook.json"
+        "research/logbook.json"
       ],
       "tags": ["setup", "fundação", "metodologia", "diário"]
+    }
+  ,{
+      "id": 2,
+      "timestamp": "2026-05-03T00:00:00-03:00",
+      "title": "Mapeamento geral dos módulos do sistema",
+      "summary": "Criação da pasta research/ e do primeiro documento de pesquisa: modulos.md. O arquivo mapeia o sistema completo de ponta a ponta — da percepção à presença física — listando as tecnologias em investigação em cada camada sem tomar decisões. logbook.json foi movido para research/.",
+      "decisions": [
+        "Pasta research/ criada para abrigar os documentos de pesquisa",
+        "logbook.json movido para research/logbook.json",
+        "modulos.md como documento de mapeamento amplo do sistema — ponto de partida para pesquisas específicas por módulo"
+      ],
+      "links": [],
+      "assets": [
+        "research/modulos.md",
+        "research/logbook.json"
+      ],
+      "tags": ["pesquisa", "módulos", "sistema", "stack"]
     }
   ]
 }
