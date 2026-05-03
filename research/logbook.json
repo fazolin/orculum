@@ -55,6 +55,18 @@
         "research/modulos.md"
       ],
       "tags": ["arquitetura", "percepção", "memória", "banco de dados vivo", "identidade", "decisão"]
+    },
+    {
+      "id": 4,
+      "timestamp": "2026-05-03T00:00:00-03:00",
+      "title": "Avatar — o oráculo pode ter um corpo",
+      "summary": "Nova direção de pesquisa para a expressão visual: o oráculo pode ter um avatar — um rosto, um corpo, uma figura que existe, olha e fala em tempo real, com lipsync sincronizado à sua voz. Isso muda o caráter da instalação: o oráculo deixa de ser um fenômeno e passa a ser uma entidade. Vários caminhos técnicos mapeados, do fotorrealismo (MetaHuman) ao rosto animado (LivePortrait) ao personagem procedural sem forma humana.",
+      "decisions": [],
+      "links": [],
+      "assets": [
+        "research/modulos.md"
+      ],
+      "tags": ["avatar", "expressão visual", "lipsync", "tempo real", "pesquisa"]
     }
   ]
 }

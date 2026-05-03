@@ -120,17 +120,50 @@ O que o oráculo mostra:
 - Imagens geradas em resposta à percepção
 - Vídeo gerado ou transformado em tempo real
 - Visuais procedurais e generativos contínuos
+- Um avatar — o corpo e o rosto do oráculo
 
 Tecnologias em investigação:
-- **StreamDiffusion** — diffusion em tempo real, latência de frames; mais adequado para fluxo contínuo
-- **ComfyUI** — pipelines de diffusion modulares; flexível, não nativo para tempo real mas otimizável
+- **StreamDiffusion** — geração de imagem em tempo real, latência de frames; mais adequado para fluxo contínuo
+- **ComfyUI** — criação de imagem por etapas modulares; flexível, não nativo para tempo real mas otimizável
 - **ControlNet** — condicionamento da geração por pose, profundidade, bordas — conecta diretamente à percepção
-- **Runway Gen-3** — geração de vídeo de alta qualidade, latência maior
-- **TouchDesigner / VVVV / Notch** — ambientes de síntese visual procedural em tempo real; não generativos por IA mas altamente expressivos e de baixíssima latência
+- **Runway Gen-3** — geração de vídeo de alta qualidade, tempo de resposta maior
+- **TouchDesigner / VVVV / Notch** — ambientes de síntese visual em tempo real; não por inteligência artificial, mas altamente expressivos e de resposta imediata
 
-Questão em aberto: geração por IA (diffusion) vs. síntese procedural vs. combinação dos dois. São registros visuais muito diferentes.
+Questão em aberto: geração por inteligência artificial vs. síntese visual direta vs. combinação dos dois. São registros visuais muito diferentes.
 
-### 4.2 Expressão sonora
+### 4.2 Avatar — O corpo do oráculo
+
+O oráculo pode ter um rosto, um corpo, uma presença visual contínua — não apenas imagens geradas em resposta, mas uma figura que existe, olha, e fala. Esta direção muda o caráter da instalação: o oráculo deixa de ser um fenômeno e passa a ser uma entidade.
+
+Questões conceituais em aberto:
+- O avatar tem forma humana, ou é algo entre humano e não-humano?
+- O rosto do oráculo é estável — sempre o mesmo — ou muda com cada visitante ou ao longo do tempo?
+- O lipsync (movimento da boca sincronizado com a fala) é essencial para a sensação de presença, ou cria uma ilusão que conflita com o caráter oracular?
+- Esta direção reforça presença física ou imaterialidade?
+
+Caminhos técnicos em investigação:
+
+**Avatar 3D em tempo real**
+- **MetaHuman (Unreal Engine 5)** — avatares humanos fotorrealistas criados e animados em tempo real; lipsync nativo com MetaHuman Animator; exige hardware potente
+- **NVIDIA Audio2Face** — anima automaticamente o rosto de um avatar a partir do áudio em tempo real; integra com Unreal Engine e outras ferramentas
+- **VRM / VRoid** — formato aberto de avatar 3D humanóide; ecossistema de ferramentas, mais leve que MetaHuman; origem no universo de VTubers
+- **Ready Player Me** — criação de avatares 3D compatíveis com múltiplas plataformas; menos fotorrealista, mais estilizado
+
+**Rosto falante (imagem animada)**
+- **SadTalker** — anima uma imagem estática de rosto a partir do áudio; roda localmente
+- **LivePortrait** — animação de retrato em tempo real com alta qualidade; roda localmente
+- **Wav2Lip** — sincronização de lábios em vídeo a partir de qualquer áudio; mais técnico, menos expressivo
+
+**Personagem conversacional com avatar**
+- **Convai** — personagem de inteligência artificial com avatar 3D e voz em tempo real; voltado para jogos e instalações interativas
+- **Inworld AI** — personagens com memória, emoção e avatar; mais voltado para entretenimento
+
+**Síntese visual procedural com presença**
+- Não um avatar humano, mas uma forma visual que "respira", reage e fala — construída em TouchDesigner ou similar, sem tentar imitar o humano
+
+Questão em aberto: o avatar é renderizado localmente (mais controle, mais poder de processamento) ou via serviço externo (mais fácil, mais dependente de conexão)?
+
+### 4.3 Expressão sonora
 
 O que o oráculo fala ou soa:
 
