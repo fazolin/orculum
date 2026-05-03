@@ -1,6 +1,6 @@
 # Módulos do sistema — visão geral
 
-> Documento de pesquisa aberta. Nada aqui é decisão — é mapeamento de possibilidades.
+> Documento de pesquisa aberta. Seções marcadas com **[DECIDIDO]** refletem escolhas já tomadas.
 
 O Oraculum é um sistema de ponta a ponta: percebe o mundo, interpreta o que percebeu, e responde com som e imagem. Esta página mapeia os módulos que compõem esse fluxo, das entradas até os resultados, e as tecnologias sendo investigadas em cada camada.
 
@@ -9,32 +9,40 @@ O Oraculum é um sistema de ponta a ponta: percebe o mundo, interpreta o que per
 ## Fluxo geral
 
 ```
-[ ENTRADA ]  →  [ INTERPRETAÇÃO ]  →  [ DECISÃO ]  →  [ SAÍDA ]  →  [ PRESENÇA FÍSICA ]
-  percepção       processamento         LLM / lógica     expressão      manifestação
+[ ENTRADA ]  →  [ INTERPRETAÇÃO ]  →  [ DB VIVO ]  →  [ DECISÃO ]  →  [ SAÍDA ]  →  [ PRESENÇA FÍSICA ]
+  percepção       processamento         memória          LLM / lógica    expressão      manifestação
 ```
+
+---
+
+## Princípio de arquitetura **[DECIDIDO]**
+
+O sistema deve ser **modular e substituível**. A IA evolui rápido — qualquer modelo em qualquer camada deve poder ser trocado por um mais rápido ou mais poderoso com o mínimo de fricção. Nenhum módulo deve ser acoplado ao modelo específico que o implementa. A interface entre módulos é o que importa, não a implementação interna.
 
 ---
 
 ## 1. Entrada — Percepção
 
-O oráculo precisa perceber o que acontece ao seu redor. Esta camada captura e processa sinais do ambiente.
+O oráculo percebe o máximo possível do que acontece ao seu redor.
 
-### 1.1 Visão
+### 1.1 Visão **[DECIDIDO]**
 
-Câmeras fornecem o fluxo visual. O que se faz com ele:
+O oráculo vê o máximo que a tecnologia permite. Não há limitação intencional de percepção — o escopo é perceber presença, movimento, pose, expressão facial, profundidade espacial e identidade. A decisão de *o que fazer* com cada dado é da camada de interpretação, não desta.
+
+O que esta camada extrai:
 
 - **Detecção de presença** — alguém está na sala? quantas pessoas?
 - **Rastreamento de pose corporal** — posição, movimento, gesto
 - **Expressão facial** — estado emocional inferido
 - **Profundidade espacial** — distância e volumetria do espaço
+- **Reconhecimento facial** — identidade de quem está diante do oráculo; base para memória persistente
 
 Tecnologias em investigação:
 - **MediaPipe** — detecção de pose, mãos, face; roda localmente, baixa latência
 - **YOLO** — detecção de objetos e pessoas em tempo real
 - **SAM (Segment Anything, Meta)** — segmentação semântica de qualquer elemento visual
 - **Câmeras de profundidade** — Intel RealSense, Microsoft Azure Kinect; adicionam dimensão Z ao espaço
-
-Questão em aberto: quanto o oráculo precisa "ver"? Presença e movimento podem ser suficientes. Ou ele precisa reconhecer rosto, intenção, identidade?
+- **Modelos de reconhecimento facial** — DeepFace, InsightFace; para identificação e persistência de identidade no DB
 
 ### 1.2 Escuta
 
@@ -54,31 +62,58 @@ Tecnologias em investigação:
 
 ## 2. Interpretação — A mente do oráculo
 
-Esta camada recebe os dados brutos da percepção e produz significado. É aqui que o oráculo decide o que o mundo está dizendo.
+Esta camada recebe os dados brutos da percepção e produz significado. É aqui que o oráculo decide o que o mundo está dizendo — e alimenta o DB vivo com o que aprendeu.
 
 ### 2.1 Camada de raciocínio — LLM
 
-Um modelo de linguagem grande atua como motor simbólico: recebe inputs multimodais (transcrições, dados de pose, descrições de cena) e produz uma interpretação — e uma intenção de resposta.
+Um modelo de linguagem grande atua como motor simbólico: recebe inputs multimodais (transcrições, dados de pose, descrições de cena, contexto do DB) e produz uma interpretação — e uma intenção de resposta.
 
 Questões em aberto:
-- Qual modelo? Modelos locais (Llama, Mistral) vs. API (Claude, GPT-4o) — trade-off entre latência, custo e capacidade
-- O LLM é o único ponto de decisão ou há lógicas paralelas (regras, estados, memória)?
-- O oráculo tem memória de sessão? De sessões anteriores? Lembra de quem já esteve diante dele?
+- Qual modelo? Modelos locais (Llama, Mistral) vs. API (Claude, GPT-4o) — trade-off entre latência, custo e capacidade. A arquitetura deve permitir trocar o modelo sem reescrever o sistema.
+- O LLM é o único ponto de decisão ou há lógicas paralelas (regras, estados)?
 - Qual é o "personagem" do oráculo — como ele interpreta e qual é sua voz?
 
 ### 2.2 Integração multimodal
 
-Como combinar visão + áudio + contexto em um único input para o LLM ou sistema de decisão:
-- Modelos multimodais nativos (GPT-4o, Claude com visão) recebem imagem + texto
-- Pipelines compostos: cada modalidade processada separadamente, resultado concatenado
+Como combinar visão + áudio + contexto do DB em um único input para o LLM:
+- Modelos multimodais nativos (GPT-4o, Claude com visão) recebem imagem + texto diretamente
+- Pipelines compostos: cada modalidade processada separadamente, resultado concatenado antes do LLM
 
 ---
 
-## 3. Saída — Expressão
+## 3. DB Vivo — Memória do oráculo **[DECIDIDO]**
+
+O oráculo tem memória. Cada interação gera dados que são persistidos e consultados nas interações seguintes. O DB é alimentado pela camada de interpretação após cada ciclo perceptivo.
+
+O que o DB armazena:
+
+- **Identidades** — rostos reconhecidos, embeddings faciais, primeira vez que apareceram, quantas vezes retornaram
+- **Histórico de interações** — o que foi dito, o que o oráculo respondeu, contexto da sessão
+- **Estado emocional observado** — por pessoa, ao longo do tempo
+- **Presenças** — quando cada pessoa esteve diante do oráculo, por quanto tempo
+
+O que o DB permite:
+
+- O oráculo reconhece quem já conhece
+- O oráculo lembra do que aconteceu antes
+- O oráculo pode tratar um retornante de forma diferente de um estranho
+- A história do oráculo cresce com o tempo — ele envelhece, acumula
+
+Tecnologias em investigação para o DB:
+- **SQLite** — leve, local, sem servidor; adequado para instalações isoladas
+- **PostgreSQL com pgvector** — para armazenar e buscar embeddings faciais por similaridade
+- **Redis** — para estado de sessão em tempo real (quem está na frente agora)
+- **Embeddings faciais** — representações vetoriais de rostos; permitem busca por similaridade sem armazenar imagens
+
+Questão em aberto: privacidade e consentimento. O oráculo que lembra de rostos levanta questões éticas e legais em espaços públicos. Como comunicar isso ao visitante? O apagamento de identidade é uma opção que o visitante pode escolher?
+
+---
+
+## 4. Saída — Expressão
 
 O oráculo responde. A resposta é sempre dupla: imagem e som.
 
-### 3.1 Expressão visual
+### 4.1 Expressão visual
 
 O que o oráculo mostra:
 
@@ -95,7 +130,7 @@ Tecnologias em investigação:
 
 Questão em aberto: geração por IA (diffusion) vs. síntese procedural vs. combinação dos dois. São registros visuais muito diferentes.
 
-### 3.2 Expressão sonora
+### 4.2 Expressão sonora
 
 O que o oráculo fala ou soa:
 
@@ -111,9 +146,9 @@ Tecnologias em investigação:
 
 ---
 
-## 4. Renderização em tempo real
+## 5. Renderização em tempo real
 
-Camada que integra expressão visual e a apresenta na tela, projeção ou superfície final. Pode ser o ambiente onde tudo roda, ou apenas a camada de saída.
+Camada que integra expressão visual e a apresenta na tela, projeção ou superfície final.
 
 Tecnologias em investigação:
 - **TouchDesigner** — ambiente visual de dataflow, integração nativa com OSC/NDI/Syphon, síntese procedural, referência no campo de arte interativa
@@ -124,9 +159,9 @@ Tecnologias em investigação:
 
 ---
 
-## 5. Presença física
+## 6. Presença física
 
-Como o oráculo habita o espaço. Esta é a camada de maior abertura conceitual — ver documento específico quando a pesquisa avançar.
+Como o oráculo habita o espaço. Esta é a camada de maior abertura conceitual.
 
 Direções em investigação:
 - **Video mapping** — projeção sobre superfícies irregulares; a superfície vive
@@ -140,29 +175,25 @@ A tensão entre presença física e imaterialidade permanece em aberto como ques
 
 ---
 
-## 6. Integração — conectando os módulos
-
-Os sistemas acima são heterogêneos — rodam em ambientes diferentes, com linguagens e protocolos diferentes. Esta camada os conecta.
+## 7. Integração — conectando os módulos
 
 Protocolos em investigação:
-- **OSC (Open Sound Control)** — protocolo padrão para comunicação entre ferramentas de arte digital; suportado por TouchDesigner, Max/MSP, SuperCollider, Unity e outros
-- **NDI (Network Device Interface)** — transporte de vídeo de alta qualidade via rede local; conecta geração de imagem à renderização
-- **Syphon (macOS) / Spout (Windows)** — compartilhamento de texturas GPU entre aplicações na mesma máquina; latência quase zero
+- **OSC (Open Sound Control)** — protocolo padrão para comunicação entre ferramentas de arte digital
+- **NDI (Network Device Interface)** — transporte de vídeo de alta qualidade via rede local
+- **Syphon (macOS) / Spout (Windows)** — compartilhamento de texturas GPU entre aplicações; latência quase zero
 - **WebSockets / HTTP** — para integração com APIs de LLM e serviços externos
 
-Questão em aberto: arquitetura centralizada (um orquestrador) vs. distribuída (módulos autônomos se comunicando). Impacto direto em latência, robustez e complexidade.
+Questão em aberto: arquitetura centralizada (um orquestrador) vs. distribuída (módulos autônomos se comunicando).
 
 ---
 
 ## Questões transversais
 
-Perguntas que atravessam todos os módulos e precisarão ser respondidas ao longo da pesquisa:
-
-- **Latência** — quanto atraso é aceitável entre percepção e resposta? O oráculo precisa ser instantâneo ou pode ter uma cadência própria, mais lenta e ritualística?
+- **Latência** — quanto atraso é aceitável? O oráculo precisa ser instantâneo ou pode ter cadência própria, mais lenta e ritualística?
 - **Hardware** — qual máquina roda o sistema? GPU local vs. cloud vs. híbrido?
 - **Autonomia** — o oráculo funciona sozinho durante uma exposição? Qual é o plano para falhas?
 - **Identidade** — o oráculo tem um personagem estável ou ele emerge da interação?
-- **Memória** — o oráculo aprende com as interações? Reconhece visitantes recorrentes?
+- **Privacidade** — como comunicar ao visitante que o oráculo o reconhece e o lembra?
 
 ---
 

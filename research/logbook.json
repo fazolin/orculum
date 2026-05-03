@@ -37,6 +37,24 @@
         "research/logbook.json"
       ],
       "tags": ["pesquisa", "módulos", "sistema", "stack"]
+    },
+    {
+      "id": 3,
+      "timestamp": "2026-05-03T00:00:00-03:00",
+      "title": "Percepção máxima, arquitetura substituível e DB vivo",
+      "summary": "Três decisões fundamentais de arquitetura. O oráculo percebe o máximo possível — incluindo reconhecimento facial e identidade. O sistema é modular e qualquer modelo pode ser trocado por um mais novo sem reescrever o sistema. Após a interpretação, cada ciclo perceptivo alimenta um DB vivo que persiste identidades, histórico de interações e presenças — o oráculo lembra de quem conhece e envelhece com o tempo.",
+      "decisions": [
+        "O oráculo percebe o máximo que a tecnologia permite — sem limitação intencional de escopo perceptivo",
+        "Arquitetura modular e substituível — qualquer modelo (LLM, visão, áudio) deve poder ser trocado sem reescrever o sistema",
+        "O input gera, após interpretação, um DB vivo — memória persistente de identidades, interações e presenças",
+        "O oráculo reconhece rostos, salva identidades e lembra de quem já esteve diante dele",
+        "Questão em aberto: privacidade e consentimento no reconhecimento facial em espaço público"
+      ],
+      "links": [],
+      "assets": [
+        "research/modulos.md"
+      ],
+      "tags": ["arquitetura", "percepção", "memória", "DB", "identidade", "decisão"]
     }
   ]
 }
